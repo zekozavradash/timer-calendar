@@ -5,10 +5,9 @@ import Timer from './timer';
 import './index.css';
 
 const App: React.FC = () => {
-  const [showCalendar, setShowCalendar] = useState(true); // State to toggle between Calendar and Timer
-
+  const [showCalendar, setShowCalendar] = useState(true); 
   const toggleView = () => {
-    setShowCalendar(prevState => !prevState); // Toggle showCalendar state
+    setShowCalendar(prevState => !prevState); 
   };
 
   return (

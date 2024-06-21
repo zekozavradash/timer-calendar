@@ -23,7 +23,7 @@ const Calendar: React.FC<CalendarProps> = ({ date }) => {
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month, getDaysInMonth(date));
-    const startingDay = firstDay.getDay(); // 0 (Sunday) to 6 (Saturday)
+    const startingDay = firstDay.getDay();
     const totalDays = getDaysInMonth(date);
 
     return {
