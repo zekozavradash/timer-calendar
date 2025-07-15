@@ -16,7 +16,7 @@ const App: React.FC = () => {
         {showCalendar ?'Switch to Calendar': 'Switch to Timer' }
       </button>
    
-      {showCalendar ? <Timer /> :<Calendar date={new Date(2024, 5, 21)} /> }
+      {showCalendar ? <Timer /> :<Calendar/> }
     </div>
   );
 };
