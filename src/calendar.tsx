@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import './index.css';
 
-interface CalendarProps {
-  date: Date;
-}
+const Calendar: React.FC = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-const Calendar: React.FC<CalendarProps> = ({ date }) => {
-  const [currentDate, setCurrentDate] = useState(date);
+  const today = new Date();
 
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const monthsOfYear = [
@@ -22,15 +20,12 @@ const Calendar: React.FC<CalendarProps> = ({ date }) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month, getDaysInMonth(date));
     const startingDay = firstDay.getDay();
     const totalDays = getDaysInMonth(date);
 
     return {
       year,
       month,
-      firstDay,
-      lastDay,
       startingDay,
       totalDays
     };
@@ -48,44 +43,50 @@ const Calendar: React.FC<CalendarProps> = ({ date }) => {
     setCurrentDate(newDate);
   };
 
-  const renderHeader = () => {
-    return (
-      <div className="calendar-header">
-        <button className='prev' onClick={prevMonth}>Prev</button>
-        <span className='monthofyear'>{monthsOfYear[currentDate.getMonth()]} {currentDate.getFullYear()}</span>
-        <button className='next' onClick={nextMonth}>Next</button>
-      </div>
-    );
-  };
+  const renderHeader = () => (
+    <div className="calendar-header">
+      <button className='prev' onClick={prevMonth}>Prev</button>
+      <span className='monthofyear'>
+        {monthsOfYear[currentDate.getMonth()]} {currentDate.getFullYear()}
+      </span>
+      <button className='next' onClick={nextMonth}>Next</button>
+    </div>
+  );
 
-  const renderDaysOfWeek = () => {
-    return (
-      <div className="days-of-week">
-        {daysOfWeek.map(day => (
-          <div key={day}>{day}</div>
-        ))}
-      </div>
-    );
-  };
+  const renderDaysOfWeek = () => (
+    <div className="days-of-week">
+      {daysOfWeek.map(day => (
+        <div key={day}>{day}</div>
+      ))}
+    </div>
+  );
 
   const renderDays = () => {
-    const monthData = getMonthData(currentDate);
-    const { startingDay, totalDays } = monthData;
+    const { startingDay, totalDays, year, month } = getMonthData(currentDate);
 
-    let days: JSX.Element[] = [];
+    const days: JSX.Element[] = [];
+
     for (let i = 0; i < startingDay; i++) {
       days.push(<div key={`empty-${i}`} className="empty"></div>);
     }
 
     for (let day = 1; day <= totalDays; day++) {
-      days.push(<div key={day} className="day">{day}</div>);
+      const isToday =
+        day === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear();
+
+      days.push(
+        <div
+          key={day}
+          className={`day${isToday ? ' today' : ''}`}
+        >
+          {day}
+        </div>
+      );
     }
 
-    return (
-      <div className="days">
-        {days}
-      </div>
-    );
+    return <div className="days">{days}</div>;
   };
 
   return (
